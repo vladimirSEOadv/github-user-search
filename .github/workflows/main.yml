@@ -2,7 +2,7 @@ name: add env
 
 on:
   push:
-    branches: [ "gh-pages" ]
+    branches: [ "main" ]
 
 jobs:
   build:
