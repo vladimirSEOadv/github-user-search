@@ -5,7 +5,6 @@ import User from "./User";
 import axios from "axios";
 
 function App() {
-
   const [searchQuery, setSearchQuery] = useState("");
   const [githubData, setGithubData] = useState([]);
   const gitTokenEnv = import.meta.env.VITE_APP_TOKEN;
