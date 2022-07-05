@@ -1,31 +1,47 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import MyInput from "./MyInput";
 import User from "./User";
+import axios from "axios";
 
 function App() {
+
   const [searchQuery, setSearchQuery] = useState("");
   const [githubData, setGithubData] = useState([]);
+  const gitTokenEnv = import.meta.env.VITE_APP_TOKEN;
+  const gitToken = "token" + "ghp_" + "nms2RduyFQMKLCEwy8ddxU8DkWvCdP2rFEW4";
 
-  const inputHandler = (e) => {
-    setSearchQuery(e.target.value)
+  const axiosInstance = axios.create({
+    baseURL: 'https://api.github.com',
+    headers: {
+      Authorization: gitTokenEnv ? gitTokenEnv : gitToken
+    }
+  });
+
+  async function getUser(searchQuery) {
+    try {
+      const response = await axiosInstance.get(`search/users?q=${searchQuery}`);
+      const data = response.data.items;
+      console.log("axiosInstance response data >", data);
+      setGithubData(data)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const fetchData = (searchQuery) => {
-    return fetch(`https://api.github.com/users?q=${searchQuery}`)
-        .then((response) => response.json())
-        .then((data) => setGithubData(data));
-
+  const inputHandler = (e) => {
+    setSearchQuery(e.target.value);
   }
 
   useEffect(() => {
-    fetchData(searchQuery)
-    console.log('githubData >', githubData)
+    getUser(searchQuery);
+    console.log('githubData >', githubData);
   },[searchQuery]);
+
 
   return (
     <div className="App">
-        <div className="title">
+        <div className="app-title">
           First Screen
         </div>
         <div className="main_wrapper">
@@ -39,7 +55,7 @@ function App() {
             {githubData.map( (user) => {
               return(
                   <>
-                    <User user={user} key={user.login}></User>
+                    <User user={user} key={user.login} axiosInstance={axiosInstance}/>
                   </>
               )
             })}
