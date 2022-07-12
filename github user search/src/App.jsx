@@ -7,13 +7,12 @@ import axios from "axios";
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [githubData, setGithubData] = useState([]);
-  const gitTokenEnv = import.meta.env.VITE_APP_TOKEN;
-  const gitToken = "token" + "ghp_" + "nms2RduyFQMKLCEwy8ddxU8DkWvCdP2rFEW4";
+  
 
   const axiosInstance = axios.create({
     baseURL: 'https://api.github.com',
     headers: {
-      Authorization: gitTokenEnv ? gitTokenEnv : gitToken
+      Authorization: VITE_APP_TOKEN
     }
   });
 
