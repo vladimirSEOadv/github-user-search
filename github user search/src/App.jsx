@@ -12,7 +12,8 @@ function App() {
   const axiosInstance = axios.create({
     baseURL: 'https://api.github.com',
     headers: {
-      Authorization: gitTokenEnv
+      'Content-Type': 'application/json',
+      'Authorization': gitTokenEnv
     }
   });
 
